@@ -15,7 +15,5 @@ class Account < ApplicationRecord
     tag
   end
 
-  def NOTE
-    ["メインアカウント", "サブアカウント", "その他"]
-  end
+  NOTE = ["メインアカウント", "サブアカウント", "その他"]
 end

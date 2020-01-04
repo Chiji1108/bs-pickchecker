@@ -36,6 +36,8 @@ class AccountsController < ApplicationController
 
     respond_to do |format|
       if @account.save
+        update_profile(@account)
+        
         format.html { redirect_to [@player, @account], notice: 'Account was successfully created.' }
         format.json { render :show, status: :created, location: @account }
       else
