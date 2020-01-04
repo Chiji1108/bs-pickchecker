@@ -5,5 +5,5 @@ class Team < ApplicationRecord
   has_many :accounts, through: :picks
   has_many :brawlers, through: :picks
 
-  validates :picks, uniqueness: true
+  # validates :picks, uniqueness: true
 end
