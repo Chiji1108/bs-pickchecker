@@ -5,7 +5,7 @@ class CreateBattles < ActiveRecord::Migration[6.0]
       t.references :battle_type, null: false, foreign_key: true
       t.datetime :time
       t.integer :duration
-      t.index [:event, :battle_type, :time, :duration], unique: true
+      t.index [:event, :battle_type, :time, :duration], unique: true, name: 'battles_composite_index'
 
       t.timestamps
     end

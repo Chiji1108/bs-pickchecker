@@ -5,7 +5,7 @@ class CreatePicks < ActiveRecord::Migration[6.0]
       t.references :brawler, null: false, foreign_key: true
       t.references :team, null: false, foreign_key: true
       t.integer :power
-      t.index [:account, :brawler, :team, :power], unique: true
+      t.index [:account, :brawler, :team, :power], unique: true, name: 'picks_composite_index'
 
       t.timestamps
     end

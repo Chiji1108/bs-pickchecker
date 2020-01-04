@@ -10,6 +10,142 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2020_01_03_091614) do
 
+  create_table "accounts", force: :cascade do |t|
+    t.string "tag", null: false
+    t.integer "player_id"
+    t.string "note"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id"], name: "index_accounts_on_player_id"
+    t.index ["tag"], name: "index_accounts_on_tag", unique: true
+  end
+
+  create_table "battle_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_battle_types_on_name", unique: true
+  end
+
+  create_table "battles", force: :cascade do |t|
+    t.integer "event_id", null: false
+    t.integer "battle_type_id", null: false
+    t.datetime "time"
+    t.integer "duration"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index "\"event\", \"battle_type\", \"time\", \"duration\"", name: "battles_composite_index", unique: true
+    t.index ["battle_type_id"], name: "index_battles_on_battle_type_id"
+    t.index ["event_id"], name: "index_battles_on_event_id"
+  end
+
+  create_table "brawlers", force: :cascade do |t|
+    t.integer "bs_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bs_id"], name: "index_brawlers_on_bs_id", unique: true
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.integer "bs_id", null: false
+    t.integer "mode_id", null: false
+    t.integer "map_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bs_id"], name: "index_events_on_bs_id", unique: true
+    t.index ["map_id"], name: "index_events_on_map_id"
+    t.index ["mode_id"], name: "index_events_on_mode_id"
+  end
+
+  create_table "maps", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_maps_on_name", unique: true
+  end
+
+  create_table "modes", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_modes_on_name", unique: true
+  end
+
+  create_table "pick_battle_histories", force: :cascade do |t|
+    t.integer "pick_id", null: false
+    t.integer "battle_id", null: false
+    t.integer "trophies"
+    t.integer "trophy_change"
+    t.boolean "is_mvp"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index "\"pick\", \"battle\", \"trophies\", \"trophy_change\", \"is_mvp\"", name: "picks_battle_histories_composite_index", unique: true
+    t.index ["battle_id"], name: "index_pick_battle_histories_on_battle_id"
+    t.index ["pick_id"], name: "index_pick_battle_histories_on_pick_id"
+  end
+
+  create_table "picks", force: :cascade do |t|
+    t.integer "account_id", null: false
+    t.integer "brawler_id", null: false
+    t.integer "team_id", null: false
+    t.integer "power"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index "\"account\", \"brawler\", \"team\", \"power\"", name: "picks_composite_index", unique: true
+    t.index ["account_id"], name: "index_picks_on_account_id"
+    t.index ["brawler_id"], name: "index_picks_on_brawler_id"
+    t.index ["team_id"], name: "index_picks_on_team_id"
+  end
+
+  create_table "players", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_players_on_name", unique: true
+  end
+
+  create_table "profiles", force: :cascade do |t|
+    t.integer "account_id", null: false
+    t.string "name"
+    t.integer "highestTrophies"
+    t.integer "highestPowerPlayPoints"
+    t.boolean "isQualifiedFromChampionshipChallenge"
+    t.integer "threeVsThreeVictories"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_profiles_on_account_id", unique: true
+  end
+
+  create_table "team_battle_histories", force: :cascade do |t|
+    t.integer "team_id", null: false
+    t.integer "battle_id", null: false
+    t.string "result"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index "\"team\", \"battle\", \"result\"", name: "team_battle_histories_composite_index", unique: true
+    t.index ["battle_id"], name: "index_team_battle_histories_on_battle_id"
+    t.index ["team_id"], name: "index_team_battle_histories_on_team_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "accounts", "players"
+  add_foreign_key "battles", "battle_types"
+  add_foreign_key "battles", "events"
+  add_foreign_key "events", "maps"
+  add_foreign_key "events", "modes"
+  add_foreign_key "pick_battle_histories", "battles"
+  add_foreign_key "pick_battle_histories", "picks"
+  add_foreign_key "picks", "accounts"
+  add_foreign_key "picks", "brawlers"
+  add_foreign_key "picks", "teams"
+  add_foreign_key "profiles", "accounts"
+  add_foreign_key "team_battle_histories", "battles"
+  add_foreign_key "team_battle_histories", "teams"
 end
