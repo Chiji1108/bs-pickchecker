@@ -8,5 +8,7 @@ class CreateBattles < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
+
+    add_index :battles, [:event, :battle_type, :time, :duration], unique: true
   end
 end

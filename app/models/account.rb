@@ -5,7 +5,6 @@ class Account < ApplicationRecord
   has_many :brawlers, dependent: :picks
 
   validates :tag, presence: true, uniqueness: true
-  validates :player, presence: true
 
   def tag=(val)
     self[:tag] = val.upcase

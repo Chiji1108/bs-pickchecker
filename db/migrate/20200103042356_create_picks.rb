@@ -5,9 +5,10 @@ class CreatePicks < ActiveRecord::Migration[6.0]
       t.references :brawler, null: false, foreign_key: true
       t.references :team, null: false, foreign_key: true
       t.integer :power
-      t.integer :trophies
 
       t.timestamps
     end
+
+    add_index :picks, [:account, :brawler, :team, :power], unique: true
   end
 end

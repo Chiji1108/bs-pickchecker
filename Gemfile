@@ -57,9 +57,11 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'rails_admin', '~> 2.0', git: 'https://github.com/sferik/rails_admin.git'
 gem 'simple_form'
+gem 'kaminari'
 gem 'slim-rails'
 gem 'dotenv-rails'
 
 gem 'faraday'
-gem "typhoeus"
-gem 'kaminari'
+gem 'typhoeus'
+
+gem 'solargraph', group: :development
