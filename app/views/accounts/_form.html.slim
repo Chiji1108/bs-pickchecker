@@ -5,7 +5,7 @@
   .form-inputs
     = f.input :tag, wrapper: :input_group, prepend: "#", placeholder: "ex) 2089R0RG2"
     / = f.association :player
-    = f.input :note, placeholder: "ex) メインアカウント"
+    = f.input :note, collection: Account::NOTE
     / = f.input :name
 
   .form-actions

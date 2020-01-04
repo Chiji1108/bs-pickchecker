@@ -2,7 +2,8 @@ class Account < ApplicationRecord
   belongs_to :player, optional: true
   has_one :profile, dependent: :destroy
   has_many :picks, dependent: :destroy
-  has_many :brawlers, dependent: :picks
+  has_many :brawlers, through: :picks
+  has_many :teams, through: :picks
 
   validates :tag, presence: true, uniqueness: true
 
@@ -12,5 +13,9 @@ class Account < ApplicationRecord
 
   def to_param
     tag
+  end
+
+  def NOTE
+    ["メインアカウント", "サブアカウント", "その他"]
   end
 end
