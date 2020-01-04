@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pick: one
+  battle: one
+  trophy_change: 1
+  is_mvp: false
+
+two:
+  pick: two
+  battle: two
+  trophy_change: 1
+  is_mvp: false

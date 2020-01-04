@@ -1,0 +1,34 @@
+p#notice = notice
+
+p
+  strong Tag:
+  = @account.tag
+p
+  strong Player:
+  = @account.player.name
+p
+  strong Note:
+  = @account.note
+
+- if @profile
+  table.table
+    tbody
+      tr
+        th name
+        td = @profile.name
+      tr
+        th highestTrophies
+        td = @profile.highestTrophies
+      tr
+        th highestPowerPlayPoints
+        td = @profile.highestPowerPlayPoints
+      tr
+        th isQualifiedFromChampionshipChallenge
+        td = @profile.isQualifiedFromChampionshipChallenge
+      tr
+        th 3Vs3Victories
+        td = @profile.threeVsThreeVictories
+
+=> link_to 'Edit', edit_player_account_path(@player, @account)
+'|
+=< link_to 'Back', player_accounts_path

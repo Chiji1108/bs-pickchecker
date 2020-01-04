@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event: one
+  battle_type: one
+  time: 2020-01-03 09:15:25
+  duration: 1
+
+two:
+  event: two
+  battle_type: two
+  time: 2020-01-03 09:15:25
+  duration: 1

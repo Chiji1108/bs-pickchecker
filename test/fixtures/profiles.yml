@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  account: one
+  name: MyString
+  highestTrophies: 1
+  highestPowerPlayPoints: 1
+  isQualifiedFromChampionshipChallenge: false
+  threeVsThreeVictories: 1
+
+two:
+  account: two
+  name: MyString
+  highestTrophies: 1
+  highestPowerPlayPoints: 1
+  isQualifiedFromChampionshipChallenge: false
+  threeVsThreeVictories: 1

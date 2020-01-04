@@ -1,0 +1,27 @@
+h1 Listing accounts
+
+table
+  thead
+    tr
+      th Tag
+      th Player
+      th Note
+      th
+      th
+      th
+
+  tbody
+    - @accounts.each do |account|
+      tr
+        td = account.tag
+        td = account.player.name
+        td = account.note
+        td = link_to 'Show', player_account_path(@player, account)
+        td = link_to 'Edit', edit_player_account_path(@player, account)
+        td = link_to 'Destroy', player_account_path(@player, account), data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+=> link_to 'New Account', new_player_account_path
+'|
+=< link_to 'Back', players_path

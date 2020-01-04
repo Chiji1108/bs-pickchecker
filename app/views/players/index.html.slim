@@ -1,0 +1,23 @@
+h1 Listing players
+table
+  thead
+    tr
+      th Name
+      th
+      th
+      th
+      th
+
+  tbody
+    - @players.each do |player|
+      tr
+        td = player.name
+        td = link_to 'Accounts', player_accounts_path(player)
+        td = link_to 'Show', player
+        td = link_to 'Edit', edit_player_path(player)
+        td = link_to 'Destroy', player, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+= paginate @players
+
+= link_to 'New Player', new_player_path
