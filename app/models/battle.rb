@@ -13,7 +13,7 @@ class Battle < ApplicationRecord
   validates :time_code, presence: true
   validates :duration, presence: true
 
-  validates :id, uniqueness: {scope: [:event, :battle_type, :time, :time_code, :duration]}
+  # validates :id, uniqueness: {scope: [:event, :battle_type, :time, :time_code, :duration]}
 
   def getTeamByAccount(account)
     self.teams.each do |t|

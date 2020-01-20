@@ -46,20 +46,20 @@ namespace :battlelog do
           })
           if battle.save
             # 3vs3 and DUO
-            if json_battlelog["battle"]["teams"]
+            if json_battlelog["battle"]["teams"].present?
               json_battlelog["battle"]["teams"].each.with_index(1) do |json_team, i|
                 team = Team.create
                 json_team.each do |json_pick|
                   json_tag = json_pick["tag"]
                   json_tag.slice!("#")
-
+          
                   pick_account = Account.create_or_find_by(tag: json_tag)
-
+          
                   profile = Profile.create_or_find_by(account_id: pick_account.id)
                   profile.update(name: json_pick["name"])
-
+          
                   brawler = Brawler.create_or_find_by(bs_id: json_pick["brawler"]["id"], name: json_pick["brawler"]["name"])
-
+          
                   pick = Pick.create({
                     battle_id: battle.id,
                     team_id: team.id,
@@ -68,8 +68,8 @@ namespace :battlelog do
                     power: json_pick["brawler"]["power"],
                     trophies: json_pick["brawler"]["trophies"]
                   })
-                  
-                  if json_battlelog["battle"]["rank"]
+          
+                  if json_battlelog["battle"]["rank"].present?
                     team.update(rank: i)
                   end
                   if pick_account.tag == account.tag
@@ -77,8 +77,8 @@ namespace :battlelog do
                     team.update(result: json_battlelog["battle"]["result"])
                     team.update(rank: json_battlelog["battle"]["rank"])
                   end
-                  if json_battlelog["brawler"]["starPlayer"]["tag"]
-                    json_star_player_tag = json_battlelog["brawler"]["starPlayer"]["tag"]
+                  if json_battlelog["battle"]["starPlayer"].present?
+                    json_star_player_tag = json_battlelog["battle"]["starPlayer"]["tag"]
                     json_star_player_tag.slice!("#")
                     if pick_account.tag == json_star_player_tag
                       pick.update(is_mvp: true)
@@ -88,7 +88,7 @@ namespace :battlelog do
                   end
                 end
               end
-
+          
               teams = battle.getOpponentTeamsByAccount(account)
               if teams.length == 1
                 if json_battlelog["battle"]["result"] == "defeat"
@@ -98,20 +98,20 @@ namespace :battlelog do
                 end
               end
             # soloFFA
-            elsif json_battlelog["battle"]["players"]
-              json_battlelog["battle"]["players"].each.with_index(1) do |json_player, i|
+            elsif json_battlelog["battle"]["players"].present?
+              json_battlelog["battle"]["players"].each.with_index(1) do |json_team, i|
                 team = Team.create
-                json_player.each do |json_pick|
+                json_team.each do |json_pick|
                   json_tag = json_pick["tag"]
                   json_tag.slice!("#")
-
+          
                   pick_account = Account.create_or_find_by(tag: json_tag)
-
+          
                   profile = Profile.create_or_find_by(account_id: pick_account.id)
                   profile.update(name: json_pick["name"])
-
+          
                   brawler = Brawler.create_or_find_by(bs_id: json_pick["brawler"]["id"], name: json_pick["brawler"]["name"])
-
+          
                   pick = Pick.create({
                     battle_id: battle.id,
                     team_id: team.id,
@@ -120,8 +120,8 @@ namespace :battlelog do
                     power: json_pick["brawler"]["power"],
                     trophies: json_pick["brawler"]["trophies"]
                   })
-                  
-                  if json_battlelog["battle"]["rank"]
+          
+                  if json_battlelog["battle"]["rank"].present?
                     team.update(rank: i)
                   end
                   if pick_account.tag == account.tag
@@ -129,8 +129,8 @@ namespace :battlelog do
                     team.update(result: json_battlelog["battle"]["result"])
                     team.update(rank: json_battlelog["battle"]["rank"])
                   end
-                  if json_battlelog["brawler"]["starPlayer"]["tag"]
-                    json_star_player_tag = json_battlelog["brawler"]["starPlayer"]["tag"]
+                  if json_battlelog["battle"]["starPlayer"].present?
+                    json_star_player_tag = json_battlelog["battle"]["starPlayer"]["tag"]
                     json_star_player_tag.slice!("#")
                     if pick_account.tag == json_star_player_tag
                       pick.update(is_mvp: true)
@@ -138,6 +138,15 @@ namespace :battlelog do
                       pick.update(is_mvp: false)
                     end
                   end
+                end
+              end
+          
+              teams = battle.getOpponentTeamsByAccount(account)
+              if teams.length == 1
+                if json_battlelog["battle"]["result"] == "defeat"
+                  teams.first.update(result: "victory")
+                elsif json_battlelog["battle"]["result"] == "victory"
+                  teams.first.update(result: "defeat")
                 end
               end
             # PvE

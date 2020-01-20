@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 2020_01_17_095021) do
     t.integer "duration", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"event\", \"battle_type\", \"time\", \"time_code\", \"duration\"", name: "battles_composite_index", unique: true
     t.index ["battle_type_id"], name: "index_battles_on_battle_type_id"
     t.index ["event_id"], name: "index_battles_on_event_id"
   end
