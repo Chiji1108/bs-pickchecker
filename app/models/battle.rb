@@ -10,8 +10,8 @@ class Battle < ApplicationRecord
   has_many :brawlers, through: :picks
 
   validates :time, presence: true
-  validates :time_code, prences: true
-  validates :duration, presences: true
+  validates :time_code, presence: true
+  validates :duration, presence: true
 
   validates :id, uniqueness: {scope: [:event, :battle_type, :time, :time_code, :duration]}
 
