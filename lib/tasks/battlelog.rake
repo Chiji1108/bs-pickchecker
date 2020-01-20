@@ -3,9 +3,7 @@ require "typhoeus/adapters/faraday"
 
 namespace :battlelog do
   desc "getting battlelogs with api and push the data"
-  task get_battlelogs: :environment do
-    
-
+  task get: :environment do
     API_URL = "https://api.brawlstars.com/v1/"
     conn = Faraday.new(url: API_URL) do |builder|
       builder.adapter :typhoeus
@@ -143,10 +141,7 @@ namespace :battlelog do
                 end
               end
             # PvE
-            elsif
-
             # 1vs6 新モード
-            else
             end
           end
         end
