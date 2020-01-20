@@ -1,15 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  battle: one
   account: one
   brawler: one
   team: one
   power: 1
   trophies: 1
+  trophy_change: 1
+  is_mvp: false
 
 two:
+  battle: two
   account: two
   brawler: two
   team: two
   power: 1
   trophies: 1
+  trophy_change: 1
+  is_mvp: false

@@ -1,14 +1,33 @@
 class Battle < ApplicationRecord
   belongs_to :event
   belongs_to :battle_type
-
-  has_many :team_battle_histories, dependent: :destroy
-  has_many :teams, through: :team_battle_histories
-  has_many :pick_battle_histories, dependent: :destroy
-  has_many :picks, through: :pick_battle_histories
-
   validates :event, presence: true
   validates :battle_type, presence: true
 
-  validates :id, uniqueness: {scope: [:event, :battle_type, :time, :duration]}
+  has_many :picks
+  has_many :accounts, through: :picks
+  has_many :teams, through: :picks
+  has_many :brawlers, through: :picks
+
+  validates :time, presence: true
+  validates :time_code, prences: true
+  validates :duration, presences: true
+
+  validates :id, uniqueness: {scope: [:event, :battle_type, :time, :time_code, :duration]}
+
+  def getTeamByAccount(account)
+    self.teams.each do |t|
+      t.accounts.each do |a|
+        if(account == a)
+          return t
+        end
+      end
+    end
+  end
+
+  def getOpponentTeamsByAccount(account)
+    teams = self.teams
+    teams.delete(self.getTeamByAccount(account))
+    teams
+  end
 end

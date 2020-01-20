@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
   belongs_to :player, optional: true
+  
   has_one :profile, dependent: :destroy
   has_many :picks, dependent: :destroy
   has_many :brawlers, through: :picks
