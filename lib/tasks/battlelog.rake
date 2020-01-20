@@ -15,7 +15,7 @@ namespace :battlelog do
     responses = {}
     conn.in_parallel do
       Account.where.not(player: nil).each do |account|
-        responses["#{account.tag}"] = conn.get("/players/%23#{account.tag}/battlelog")
+        responses["#{account.tag}"] = conn.get("players/%23#{account.tag}/battlelog")
       end
     end
     responses.each do |k, v|
@@ -29,11 +29,11 @@ namespace :battlelog do
           battle_type = BattleType.create_or_find_by(name: json_battlelog["battle"]["type"])
 
           json_battleTime = json_battlelog["battleTime"]
-          /¥./ =~ json_battleTime
+          /\./ =~ json_battleTime
           date = /T/.match($`).pre_match
-          /¥./ =~ json_battleTime
+          /\./ =~ json_battleTime
           time = /T/.match($`).post_match
-          /¥./ =~ json_battleTime
+          /\./ =~ json_battleTime
           json_time_code = $'
           datetime = Time.utc(date.slice(0,4),date.slice(4,2),date.slice(6,2),time.slice(0,2),time.slice(2,2),time.slice(4,2))
 
