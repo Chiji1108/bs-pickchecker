@@ -8,12 +8,12 @@ class Battle < ApplicationRecord
   has_many :accounts, through: :picks
   has_many :teams, through: :picks
   has_many :brawlers, through: :picks
+  has_many :access_histories
 
   validates :time, presence: true
   validates :time_code, presence: true
-  validates :duration, presence: true
 
-  # validates :id, uniqueness: {scope: [:event, :battle_type, :time, :time_code, :duration]}
+  validates :id, uniqueness: {scope: [:event, :battle_type, :time, :time_code, :duration]}, allow_nil: true
 
   def getTeamByAccount(account)
     self.teams.each do |t|
@@ -21,6 +21,14 @@ class Battle < ApplicationRecord
         if(account == a)
           return t
         end
+      end
+    end
+  end
+
+  def getPckByAccount(account)
+    self.picks.each do |pick|
+      if(pick.account == account)
+        return pick
       end
     end
   end

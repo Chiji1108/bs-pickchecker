@@ -5,6 +5,7 @@ class Account < ApplicationRecord
   has_many :picks, dependent: :destroy
   has_many :brawlers, through: :picks
   has_many :teams, through: :picks
+  has_many :access_histories
 
   validates :tag, presence: true, uniqueness: true
 

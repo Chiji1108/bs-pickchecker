@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_17_095021) do
+ActiveRecord::Schema.define(version: 2020_01_21_083512) do
+
+  create_table "access_histories", force: :cascade do |t|
+    t.integer "account_id", null: false
+    t.integer "battle_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_access_histories_on_account_id"
+    t.index ["battle_id"], name: "index_access_histories_on_battle_id"
+  end
 
   create_table "accounts", force: :cascade do |t|
     t.string "tag", null: false
@@ -34,7 +43,7 @@ ActiveRecord::Schema.define(version: 2020_01_17_095021) do
     t.integer "battle_type_id", null: false
     t.datetime "time", null: false
     t.string "time_code", null: false
-    t.integer "duration", null: false
+    t.integer "duration"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["battle_type_id"], name: "index_battles_on_battle_type_id"
@@ -117,6 +126,8 @@ ActiveRecord::Schema.define(version: 2020_01_17_095021) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "access_histories", "accounts"
+  add_foreign_key "access_histories", "battles"
   add_foreign_key "accounts", "players"
   add_foreign_key "battles", "battle_types"
   add_foreign_key "battles", "events"
