@@ -1,22 +1,28 @@
 class AccountsController < ApplicationController
-  before_action :set_player
   before_action :set_account, only: [:show, :edit, :update, :destroy]
 
   # GET /accounts
   # GET /accounts.json
   def index 
-    @accounts = @player.accounts.all
+    @accounts = Account.all.page(params[:page])
+  end
+
+  # POST /accounts/search
+  def search
+    @accounts = Player.find_by(name: params[:player_name]).accounts.page(params[:page])
+    render :index
   end
 
   # GET /accounts/1
   # GET /accounts/1.json
   def show
+    update_profile(@account)
     @profile = @account.profile
   end
 
   # GET /accounts/new
   def new
-    @account = @player.accounts.new
+    @account = Account.new
   end
 
   # GET /accounts/1/edit
@@ -28,17 +34,18 @@ class AccountsController < ApplicationController
   def create
     account = Account.find_by(tag: account_params[:tag])
     if account
-      account.player_id = @player.id
+      account.player_id = Player.find(account_params[:player_id]).id
+      account.note = account_params[:note]
       @account = account
     else
-      @account = @player.accounts.new(account_params)
+      @account = Account.new(account_params)
     end
 
     respond_to do |format|
       if @account.save
         update_profile(@account)
         
-        format.html { redirect_to [@player, @account], notice: 'Account was successfully created.' }
+        format.html { redirect_to @account, notice: 'Account was successfully created.' }
         format.json { render :show, status: :created, location: @account }
       else
         format.html { render :new }
@@ -54,7 +61,7 @@ class AccountsController < ApplicationController
       if @account.update(account_params)
         update_profile(@account)
 
-        format.html { redirect_to [@player, @account], notice: 'Account was successfully updated.' }
+        format.html { redirect_to @account, notice: 'Account was successfully updated.' }
         format.json { render :show, status: :ok, location: @account }
       else
         format.html { render :edit }
@@ -68,24 +75,20 @@ class AccountsController < ApplicationController
   def destroy
     @account.destroy
     respond_to do |format|
-      format.html { redirect_to player_accounts_url, notice: 'Account was successfully destroyed.' }
+      format.html { redirect_to accounts_url, notice: 'Account was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_player
-      @player = Player.find_by!(name: params[:player_name])
-    end
-    # Use callbacks to share common setup or constraints between actions.
-    def set_account #paramsにplayer_nameがある時だけ有効
-      @account = @player.accounts.find_by!(tag: params[:tag])
+    def set_account
+      @account = Account.find_by!(tag: params[:tag])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def account_params
-      params.require(:account).permit(:tag, :note)
+      params.require(:account).permit(:tag, :note, :player_id)
     end
 
     def get_profile_from_api(tag)

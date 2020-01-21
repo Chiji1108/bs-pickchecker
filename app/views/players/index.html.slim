@@ -1,4 +1,5 @@
 h1 Listing players
+= link_to 'New Player', new_player_path, class: "btn"
 table
   thead
     tr
@@ -12,12 +13,13 @@ table
     - @players.each do |player|
       tr
         td = player.name
-        td = link_to 'Accounts', player_accounts_path(player)
+        - if player.accounts.present?
+          td = link_to 'Accounts', search_accounts_path(player_name: player.name), method: :post
+        - else
+          td
         td = link_to 'Show', player
         td = link_to 'Edit', edit_player_path(player)
         td = link_to 'Destroy', player, data: { confirm: 'Are you sure?' }, method: :delete
 
 br
 = paginate @players
-
-= link_to 'New Player', new_player_path

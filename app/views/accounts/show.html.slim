@@ -5,7 +5,8 @@ p
   = @account.tag
 p
   strong Player:
-  = @account.player.name
+  - if @account.player.present?
+    = @account.player.name
 p
   strong Note:
   = @account.note
@@ -29,6 +30,6 @@ p
         th 3Vs3Victories
         td = @profile.threeVsThreeVictories
 
-=> link_to 'Edit', edit_player_account_path(@player, @account)
+=> link_to 'Edit', edit_account_path(@account)
 '|
-=< link_to 'Back', player_accounts_path
+=< link_to 'Back', accounts_path

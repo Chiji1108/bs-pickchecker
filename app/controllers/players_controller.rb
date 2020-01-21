@@ -4,8 +4,7 @@ class PlayersController < ApplicationController
   # GET /players
   # GET /players.json
   def index
-    @players = Player.all
-    @players = @players.page(params[:page]).per(2)
+    @players = Player.all.page(params[:page])
   end
 
   # GET /players/1
@@ -29,7 +28,7 @@ class PlayersController < ApplicationController
 
     respond_to do |format|
       if @player.save
-        format.html { redirect_to new_player_account_path(@player), notice: 'Player was successfully created.' }
+        format.html { redirect_to new_account_path, notice: 'Player was successfully created.' }
         format.json { render :show, status: :created, location: @player }
       else
         format.html { render :new }

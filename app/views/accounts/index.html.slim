@@ -1,9 +1,10 @@
 h1 Listing accounts
-
+= link_to 'New Account', new_account_path, class: "btn"
 table
   thead
     tr
       th Tag
+      th Name
       th Player
       th Note
       th
@@ -14,14 +15,18 @@ table
     - @accounts.each do |account|
       tr
         td = account.tag
-        td = account.player.name
+        - if account.profile.present?
+          td = account.profile.name
+        - else
+          td
+        - if account.player.present?
+          td = account.player.name
+        - else
+          td
         td = account.note
-        td = link_to 'Show', player_account_path(@player, account)
-        td = link_to 'Edit', edit_player_account_path(@player, account)
-        td = link_to 'Destroy', player_account_path(@player, account), data: { confirm: 'Are you sure?' }, method: :delete
+        td = link_to 'Show', account_path(account)
+        td = link_to 'Edit', edit_account_path(account)
+        td = link_to 'Destroy', account_path(account), data: { confirm: 'Are you sure?' }, method: :delete
 
 br
-
-=> link_to 'New Account', new_player_account_path
-'|
-=< link_to 'Back', players_path
+= paginate @accounts
