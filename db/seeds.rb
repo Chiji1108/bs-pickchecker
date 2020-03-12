@@ -7,3 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 player = Player.create_or_find_by(name: "Miri")
 Account.create_or_find_by(tag: "2089R0RG2", note: "メインアカウント", player_id: player.id)
+
+# yamada UYVQJ8Y
+# milkreo 20c0ll00
+# fashion sub 9L9PLUGCJ

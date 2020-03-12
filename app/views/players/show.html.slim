@@ -4,7 +4,8 @@ p
   strong Name:
   = @player.name
 p
-  / = link_to 'Accounts', player_accounts_path(@player)
+  - if @player.accounts.present?
+    = link_to 'Accounts', search_accounts_path(player_name: @player.name), method: :post
 
 => link_to 'Edit', edit_player_path(@player)
 '|

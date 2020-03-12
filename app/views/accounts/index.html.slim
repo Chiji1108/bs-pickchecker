@@ -1,5 +1,8 @@
 h1 Listing accounts
 = link_to 'New Account', new_account_path, class: "btn"
+== render 'search'
+/ - if flash[:search_result].present?
+/   = link_to 'アカウント一覧', accounts_path
 table
   thead
     tr
@@ -20,7 +23,7 @@ table
         - else
           td
         - if account.player.present?
-          td = account.player.name
+          td = link_to account.player.name, player_path(account.player)
         - else
           td
         td = account.note

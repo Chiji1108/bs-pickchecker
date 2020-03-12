@@ -9,7 +9,19 @@ class AccountsController < ApplicationController
 
   # POST /accounts/search
   def search
-    @accounts = Player.find_by(name: params[:player_name]).accounts.page(params[:page])
+    if params[:player_name].present?
+      @accounts = Player.find_by(name: params[:player_name]).accounts.page(params[:page])
+      # flash[:search_result] = params[:player_name]
+    elsif params[:search].present?
+      if params[:search][:profile_name] != ""
+        accounts = Profile.where("name LIKE ?", "%#{params[:search][:profile_name]}%").map{ |profile| profile.account }
+        @accounts = Account.where(id: accounts.map{ |account| account.id}).page(params[:page])
+        # flash[:search_result] = params[:search][:profile_name]
+      else
+        redirect_to accounts_url
+        return
+      end
+    end
     render :index
   end
 
