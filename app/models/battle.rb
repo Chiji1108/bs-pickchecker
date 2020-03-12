@@ -32,7 +32,7 @@ class Battle < ApplicationRecord
     #     return pick
     #   end
     # end
-    self.picks.includes(:accounts).find_by(accounts: {id: account.id})
+    self.picks.find_by(account_id: account.id)
   end
 
   def teams_opponent_with(account)

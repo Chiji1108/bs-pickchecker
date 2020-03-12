@@ -1,0 +1,15 @@
+ja:
+  activerecord:
+    models:
+      access_history: アクセス履歴
+      battle_type: バトルタイプ
+      account: アカウント
+      profile: プロフィール
+      player: プレイヤー
+      map: マップ
+      mode: モード
+      event: イベント
+      pick: ピック
+      team: チーム
+      brawler: キャラ
+      battle: バトル

@@ -23,9 +23,9 @@ namespace :battlelog do
     responses.each do |k, v|
       if v.success?
         account = Account.find_by(tag: k)
+        puts HighLine.new.color(account.player.name, :red)
         json_battlelogs = JSON.parse(v.body)
         json_battlelogs["items"].each.with_index(1) do |json_battlelog, i|
-          puts ""
           puts "   --- ( #{i} / #{json_battlelogs["items"].length} ) ---"
           mode = Mode.find_or_create_by(name: json_battlelog["event"]["mode"])
           map = Map.find_or_create_by(name: json_battlelog["event"]["map"])
@@ -89,10 +89,7 @@ namespace :battlelog do
           
                   brawler = Brawler.find_or_create_by(bs_id: json_pick["brawler"]["id"], name: json_pick["brawler"]["name"])
           
-                  # pick_id = Pick.count
-                  # puts "  Picks count: #{Pick.count}"
                   pick = Pick.create!(
-                    # id: pick_id+1,
                     battle_id: battle.id,
                     team_id: team.id,
                     account_id: pick_account.id,
@@ -100,11 +97,9 @@ namespace :battlelog do
                     power: json_pick["brawler"]["power"],
                     trophies: json_pick["brawler"]["trophies"]
                   )
-                  # puts "  Picks count: #{Pick.count}"
-                  # puts "  Pick ID: #{pick.id}"
 
                   if json_battlelog["battle"]["rank"].present?
-                    team.update!(rank: i)
+                    team.update!(rank: i2)
                     # puts "#{team.rank}"
                   end
                   if pick_account.tag == account.tag
@@ -124,13 +119,13 @@ namespace :battlelog do
                     end
                   end
 
-                  puts HighLine.new.color(" ↓↓↓↓↓", :red)
-                  puts "  Picks count: #{Pick.count}"
-                  puts "  Pick ID: #{pick.id}"
-                  puts "  Pick Team ID: #{pick.team.id}"
-                  puts "  Pick Battle ID: #{pick.battle.id}"
-                  puts "  Teams count: #{Team.count}"
-                  puts HighLine.new.color(" ↑↑↑↑↑", :red)
+                  # puts HighLine.new.color(" ↓↓↓↓↓", :red)
+                  # puts "  Picks count: #{Pick.count}"
+                  # puts "  Pick ID: #{pick.id}"
+                  # puts "  Pick Team ID: #{pick.team.id}"
+                  # puts "  Pick Battle ID: #{pick.battle.id}"
+                  # puts "  Teams count: #{Team.count}"
+                  # puts HighLine.new.color(" ↑↑↑↑↑", :red)
                 end
               end
             end
@@ -173,7 +168,7 @@ namespace :battlelog do
               # puts "  Picks count: #{Pick.count}"
       
               if json_battlelog["battle"]["rank"].present?
-                team.update(rank: i)
+                team.update(rank: i2)
               end
               if pick_account.tag == account.tag
                 pick.update(trophy_change: json_battlelog["battle"]["trophyChange"])
@@ -190,13 +185,13 @@ namespace :battlelog do
                 end
               end
               
-              puts HighLine.new.color(" ↓↓↓↓↓", :green)
-              puts "  Picks count: #{Pick.count}"
-              puts "  Pick ID: #{pick.id}"
-              puts "  Pick Team ID: #{pick.team.id}"
-              puts "  Pick Battle ID: #{pick.battle.id}"
-              puts "  Teams count: #{Team.count}"
-              puts HighLine.new.color(" ↑↑↑↑↑", :green)
+              # puts HighLine.new.color(" ↓↓↓↓↓", :green)
+              # puts "  Picks count: #{Pick.count}"
+              # puts "  Pick ID: #{pick.id}"
+              # puts "  Pick Team ID: #{pick.team.id}"
+              # puts "  Pick Battle ID: #{pick.battle.id}"
+              # puts "  Teams count: #{Team.count}"
+              # puts HighLine.new.color(" ↑↑↑↑↑", :green)
             end
         
             teams = battle.teams_opponent_with(account)

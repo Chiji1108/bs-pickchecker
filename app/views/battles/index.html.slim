@@ -1,26 +1,38 @@
 h1 Battles#index
+= paginate @battles
 - @battles.each do |battle|
-  .row
+  .row.p-2
     .col
-      .card
+      .card.shadow
         .card-body
-          .container
-            .row
-              .col
-                p = battle.event.mode.name
-                p = battle.event.map.name
-              .col
-                p = battle.battle_type.name
+          .container-fluid
+            .d-flex.flex-row
+              .pr-2.small = l battle.time
+              - if battle.duration.present?
+                .small = battle.duration
+                .small.pl-1 = t "seconds"
+            .d-flex.flex-row
+              .px-2 = t battle.event.mode.name
+              = "/"
+              .px-2 = t battle.event.map.name
+              .px-2.ml-auto = t battle.battle_type.name
             .row
               - battle.teams.each do |team|
-                .col
+                .col.m-1.shadow-sm.border
                   .row
-                    - if team.result.present?
-                      p = team.result
-                    - if team.rank.present?
-                      p = team.rank
+                    .col.text-center.border-bottom
+                      - if team.result.present?
+                        = t team.result
+                      - if team.rank.present?
+                        = team.rank
                   .row
                     - team.picks.each do |pick|
                       .col
-                        p = pick.brawler.name
+                        - if pick.is_mvp
+                          p.mark = pick.account.profile.name
+                        - else
+                          p = pick.account.profile.name
+                        p.mb-0 = pick.brawler.name
+                        p.mb-0 = "Lv.#{pick.power}"
+                        p.mb-0 = pick.trophies
 
