@@ -1,0 +1,26 @@
+h1 Battles#index
+- @battles.each do |battle|
+  .row
+    .col
+      .card
+        .card-body
+          .container
+            .row
+              .col
+                p = battle.event.mode.name
+                p = battle.event.map.name
+              .col
+                p = battle.battle_type.name
+            .row
+              - battle.teams.each do |team|
+                .col
+                  .row
+                    - if team.result.present?
+                      p = team.result
+                    - if team.rank.present?
+                      p = team.rank
+                  .row
+                    - team.picks.each do |pick|
+                      .col
+                        p = pick.brawler.name
+

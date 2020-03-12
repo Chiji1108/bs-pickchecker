@@ -1,0 +1,8 @@
+= simple_form_for :search, url: search_accounts_path, wrapper: :inline_form, html: { class: "form-inline" }, wrapper_mappings: {boolean: :inline_boolean} do |f|
+  = f.error_notification
+
+  .form-inputs.mb-2.mr-sm-2
+    = f.input :profile_name
+
+  .form-actions.mb-2.mr-sm-2
+    = f.submit "Search", class: "btn btn-primary"
