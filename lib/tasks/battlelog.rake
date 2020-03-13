@@ -10,6 +10,7 @@ namespace :battlelog do
     API_URL = "https://api.starlist.pro/v1/"
     conn = Faraday.new(API_URL) do |builder|
       builder.request :retry, max: 2, interval: 0.5, interval_randomness: 0.5, backoff_factor: 2
+      builder.response :logger
 
       # builder.adapter :typhoeus
       builder.adapter Faraday.default_adapter
@@ -217,7 +218,7 @@ namespace :battlelog do
           end
         end
       else
-        puts HighLine.new.color("#{k}がエラー -> code: #{v.status}, headers: #{v.headers}", :red)
+        puts HighLine.new.color("#{k}がエラー -> code: #{v.status}", :red)
       end
     end
   end
