@@ -108,7 +108,12 @@ class AccountsController < ApplicationController
     end
 
     def get_profile_from_api(tag)
-      connection = Faraday.new("https://api.brawlstars.com/v1/players/%23#{tag}")
+      connection = Faraday.new("https://api.brawlstars.com/v1/players/%23#{tag}") do |builder|
+        builder.request :retry, max: 2, interval: 0.5, interval_randomness: 0.5, backoff_factor: 2
+        builder.response :logger
+  
+        builder.adapter Faraday.default_adapter
+      end
       connection.headers["Accept"] = "application/json"
       connection.headers["authorization"] = ENV['API_TOKEN']
       connection.headers["X-Forwarded-For"] = ENV['API_IP']

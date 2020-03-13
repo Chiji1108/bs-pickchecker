@@ -29,10 +29,11 @@ h1 バトル一覧
                     - team.picks.each do |pick|
                       .col
                         - if pick.is_mvp
-                          p.mark = pick.account.profile.name
+                          p.mark = link_to pick.account.profile.name, account_path(pick.account)
                         - else
-                          p = pick.account.profile.name
+                          p = link_to pick.account.profile.name, account_path(pick.account)
                         p.mb-0 = pick.brawler.name
-                        p.mb-0 = "Lv.#{pick.power}"
-                        p.mb-0 = pick.trophies
+                        - if battle.battle_type.name == "ranked"
+                          p.mb-0 = "Lv.#{pick.power}"
+                          p.mb-0 = pick.trophies
 
