@@ -17,5 +17,5 @@ class Account < ApplicationRecord
     tag
   end
 
-  NOTE = ["Main Account", "Sub Account", "Other"]
+  NOTE = ["メインアカウント", "サブ垢", "その他"]
 end
