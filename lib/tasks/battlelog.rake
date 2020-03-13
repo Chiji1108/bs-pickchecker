@@ -6,28 +6,36 @@ namespace :battlelog do
   task get: :environment do
     # ActiveRecord::Base.logger = Logger.new(STDOUT)
 
-    API_URL = "https://api.brawlstars.com/v1/"
-    conn = Faraday.new(url: API_URL) do |builder|
-      builder.adapter :typhoeus
+    # API_URL = "https://api.brawlstars.com/v1/"
+    API_URL = "https://api.starlist.pro/v1/"
+    conn = Faraday.new(API_URL) do |builder|
+      builder.request :retry, max: 2, interval: 0.5, interval_randomness: 0.5, backoff_factor: 2
+
+      # builder.adapter :typhoeus
+      builder.adapter Faraday.default_adapter
     end
     conn.headers["Accept"] = "application/json"
-    conn.headers["authorization"] = ENV['API_TOKEN']
-    conn.headers["X-Forwarded-For"] = ENV['API_IP']
+    # conn.headers["authorization"] = ENV['API_TOKEN']
+    # conn.headers["X-Forwarded-For"] = ENV['API_IP']
+    conn.headers["Authorization"] = ENV['STARLIST_TOKEN']
 
     responses = {}
-    conn.in_parallel do
-      Account.where.not(player: nil).each do |account|
-        responses["#{account.tag}"] = conn.get("players/%23#{account.tag}/battlelog")
-      end
+    # conn.in_parallel do
+    #   Account.where.not(player: nil).each do |account|
+    #     responses["#{account.tag}"] = conn.get("players/%23#{account.tag}/battlelog")
+    #   end
+    # end
+    Account.where.not(player: nil).each do |account|
+      responses["#{account.tag}"] = conn.get("player/battlelog?tag=#{account.tag}")
     end
     responses.each do |k, v|
       if v.success?
         account = Account.find_by(tag: k)
-        puts HighLine.new.color(account.player.name, :red)
+        puts HighLine.new.color(account.player.name, :green)
         json_battlelogs = JSON.parse(v.body)
         json_battlelogs["items"].each.with_index(1) do |json_battlelog, i|
           ActiveRecord::Base.transaction do
-            puts "   --- ( #{i} / #{json_battlelogs["items"].length} ) ---"
+            # puts "   --- ( #{i} / #{json_battlelogs["items"].length} ) ---"
             mode = Mode.find_or_create_by(name: json_battlelog["event"]["mode"])
             map = Map.find_or_create_by(name: json_battlelog["event"]["map"])
             event = Event.find_or_create_by(bs_id: json_battlelog["event"]["id"], mode_id: mode.id, map_id: map.id)
@@ -61,7 +69,7 @@ namespace :battlelog do
               next
             end
 
-            puts "new Battle (#{i} / #{json_battlelogs["items"].length})"
+            # puts "new Battle (#{i} / #{json_battlelogs["items"].length})"
             battle = Battle.create!({
               event_id: event.id,
               battle_type_id: battle_type.id,
@@ -76,10 +84,10 @@ namespace :battlelog do
             if json_battlelog["battle"]["teams"].present?
               json_battlelog["battle"]["teams"].each.with_index(1) do |json_team, i2|
                 team = Team.create
-                puts "new Team (#{i2} / #{json_battlelog["battle"]["teams"].length})"
+                # puts "new Team (#{i2} / #{json_battlelog["battle"]["teams"].length})"
                 ActiveRecord::Base.transaction do
                   json_team.each.with_index(1) do |json_pick, i3|
-                    puts " new Pick (#{i3} / #{json_team.length})"
+                    # puts " new Pick (#{i3} / #{json_team.length})"
                     json_tag = json_pick["tag"]
                     json_tag.slice!("#")
             
@@ -144,7 +152,7 @@ namespace :battlelog do
             elsif json_battlelog["battle"]["players"].present?
               json_battlelog["battle"]["players"].each.with_index(1) do |json_pick, i2|
                 team = Team.create
-                puts "new Team & Pick (#{i2} / #{json_battlelog["battle"]["players"].length})"
+                # puts "new Team & Pick (#{i2} / #{json_battlelog["battle"]["players"].length})"
                 json_tag = json_pick["tag"]
                 json_tag.slice!("#")
         
@@ -209,7 +217,7 @@ namespace :battlelog do
           end
         end
       else
-        puts "#{k}がエラー"
+        puts HighLine.new.color("#{k}がエラー -> code: #{v.status}, headers: #{v.headers}", :red)
       end
     end
   end
