@@ -1,5 +1,6 @@
 require "typhoeus"
 require "typhoeus/adapters/faraday"
+require "highline"
 
 namespace :battlelog do
   desc "getting battlelogs with api and push the data"
