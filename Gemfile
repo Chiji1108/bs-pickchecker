@@ -67,10 +67,11 @@ gem 'dotenv-rails'
 gem 'faraday'
 gem 'typhoeus'
 
+gem 'highline'
+
 group :development, :test do
   gem 'unicode-display_width'
   gem 'hirb'
   gem 'hirb-unicode'
   # gem 'solargraph'
-  gem 'highline'
 end
