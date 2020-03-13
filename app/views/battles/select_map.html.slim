@@ -1,0 +1,7 @@
+h1 マップ選択
+= simple_form_for :select_map, method: :post, url: "/battles/#{@mode.id}/select_map" do |f|
+  = f.error_notification
+
+  = f.input :map, collection: Event.where(mode_id: @mode.id).map {|event| event.map.name}, required: true
+
+  = f.submit "Next", class: "btn btn-primary"

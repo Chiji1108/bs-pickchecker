@@ -1,4 +1,4 @@
-= simple_form_for :search, url: search_accounts_path, wrapper: :inline_form, html: { class: "form-inline" }, wrapper_mappings: {boolean: :inline_boolean} do |f|
+= simple_form_for :search, method: :post, url: search_accounts_path, wrapper: :inline_form, html: { class: "form-inline" }, wrapper_mappings: {boolean: :inline_boolean} do |f|
   = f.error_notification
 
   .form-inputs.mb-2.mr-sm-2

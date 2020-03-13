@@ -17,15 +17,15 @@ html.h-100
         .collapse.navbar-collapse id="header"
           ul.navbar-nav.mr-auto.mt-2.mt-lg-0
             li.nav-item
-              = link_to "Admin", '/admin', class: "nav-link"
+              = link_to "検索", "/battles/select_mode", class: "nav-link"
             li.nav-item
-              = link_to "Players", players_path, class: "nav-link"
+              = link_to "プレイヤー一覧", players_path, class: "nav-link"
             li.nav-item
-              = link_to "Accounts", accounts_path, class: "nav-link"
+              = link_to "アカウント一覧", accounts_path, class: "nav-link"
             li.nav-item
-              = link_to "Battles", battles_path, class: "nav-link"
+              = link_to "バトル一覧", battles_path, class: "nav-link"
             li.nav-item
-              .nav-link 検索
+              = link_to "管理", '/admin', class: "nav-link"
     main.flex-shrink-0
       .container
         - if flash[:notice]

@@ -1,6 +1,8 @@
-h1 Listing accounts
+h1 アカウント一覧
 = link_to 'New Account', new_account_path, class: "btn"
 == render 'search'
+br
+= paginate @accounts
 / - if flash[:search_result].present?
 /   = link_to 'アカウント一覧', accounts_path
 table
@@ -30,6 +32,3 @@ table
         td = link_to 'Show', account_path(account)
         td = link_to 'Edit', edit_account_path(account)
         td = link_to 'Destroy', account_path(account), data: { confirm: 'Are you sure?' }, method: :delete
-
-br
-= paginate @accounts

@@ -5,8 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-player = Player.create(name: "Miri")
-Account.create(tag: "2089R0RG2", note: "メインアカウント", player_id: player.id)
+
+# player = Player.create(name: "Miri")
+# Account.create(tag: "2089R0RG2", note: "メインアカウント", player_id: player.id)
 
 player = Player.create(name: "ミルクレオ")
 Account.create(tag: "20C0LL00", note: "メインアカウント", player_id: player.id)

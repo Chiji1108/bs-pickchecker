@@ -1,0 +1,9 @@
+h1 プレイヤー選択
+= simple_form_for :select_player, method: :post, url: "/battles/select_player?event_id=#{@event.id}" do |f|
+  = f.error_notification
+
+  = f.input :player1, collection: Player.all.map {|player| player.name}, required: true
+  = f.input :player2, collection: Player.all.map {|player| player.name}, required: false
+  = f.input :player3, collection: Player.all.map {|player| player.name}, required: false
+
+  = f.submit "Next", class: "btn btn-primary"

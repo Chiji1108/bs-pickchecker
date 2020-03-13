@@ -9,9 +9,9 @@ ja:
   # SPIKE: スパイク
   ranked: ランクマッチ
   friend: フレバト
-  brawlBall: ブロストライカー
-  siege: 制圧
-  gemGrab: エメハン
+  # brawlBall: ブロストライカー
+  # siege: 制圧
+  # gemGrab: エメハン
   defeat: 負け
   victory: 勝ち
   seconds: 秒間

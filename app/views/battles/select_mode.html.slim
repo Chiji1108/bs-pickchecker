@@ -1,0 +1,7 @@
+h1 モード選択
+= simple_form_for :select_mode, method: :post, url: "/battles/select_mode" do |f|
+  = f.error_notification
+
+  = f.input :mode, collection: Mode.all.map {|mode| mode.name}, required: true
+
+  = f.submit "Next", class: "btn btn-primary"
