@@ -6,29 +6,29 @@ namespace :battlelog do
   task get: :environment do
     # ActiveRecord::Base.logger = Logger.new(STDOUT)
 
-    # API_URL = "https://api.brawlstars.com/v1/"
-    API_URL = "https://api.starlist.pro/v1/"
+    API_URL = "https://api.brawlstars.com/v1/"
+    # API_URL = "https://api.starlist.pro/v1/"
     conn = Faraday.new(API_URL) do |builder|
       builder.request :retry, max: 2, interval: 0.5, interval_randomness: 0.5, backoff_factor: 2
-      builder.response :logger
+      # builder.response :logger
 
-      # builder.adapter :typhoeus
-      builder.adapter Faraday.default_adapter
+      builder.adapter :typhoeus
+      # builder.adapter Faraday.default_adapter
     end
     conn.headers["Accept"] = "application/json"
-    # conn.headers["authorization"] = ENV['API_TOKEN']
-    # conn.headers["X-Forwarded-For"] = ENV['API_IP']
-    conn.headers["Authorization"] = ENV['STARLIST_TOKEN']
+    conn.headers["authorization"] = ENV['API_TOKEN']
+    conn.headers["X-Forwarded-For"] = ENV['API_IP']
+    # conn.headers["Authorization"] = ENV['STARLIST_TOKEN']
 
     responses = {}
-    # conn.in_parallel do
-    #   Account.where.not(player: nil).each do |account|
-    #     responses["#{account.tag}"] = conn.get("players/%23#{account.tag}/battlelog")
-    #   end
-    # end
-    Account.where.not(player: nil).each do |account|
-      responses["#{account.tag}"] = conn.get("player/battlelog?tag=#{account.tag}")
+    conn.in_parallel do
+      Account.where.not(player: nil).each do |account|
+        responses["#{account.tag}"] = conn.get("players/%23#{account.tag}/battlelog")
+      end
     end
+    # Account.where.not(player: nil).each do |account|
+    #   responses["#{account.tag}"] = conn.get("player/battlelog?tag=#{account.tag}")
+    # end
     responses.each do |k, v|
       if v.success?
         account = Account.find_by(tag: k)
