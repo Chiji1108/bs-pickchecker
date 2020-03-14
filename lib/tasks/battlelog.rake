@@ -40,7 +40,11 @@ namespace :battlelog do
             mode = Mode.find_or_create_by(name: json_battlelog["event"]["mode"])
             map = Map.find_or_create_by(name: json_battlelog["event"]["map"])
             event = Event.find_or_create_by(bs_id: json_battlelog["event"]["id"], mode_id: mode.id, map_id: map.id)
-            battle_type = BattleType.find_or_create_by(name: json_battlelog["battle"]["type"])
+            if json_battlelog["battle"]["type"].present?
+              battle_type = BattleType.find_or_create_by(name: json_battlelog["battle"]["type"])
+            else
+              battle_type = BattleType.find_or_create_by(name: "other")
+            end
 
             json_battleTime = json_battlelog["battleTime"]
             /\./ =~ json_battleTime
@@ -149,8 +153,8 @@ namespace :battlelog do
                   teams.first.update(result: "defeat")
                 end
               end
-            # soloFFA
-            elsif json_battlelog["battle"]["players"].present?
+            # soloFFA except bigGame
+            elsif json_battlelog["battle"]["players"].present? && json_battlelog["battle"]["bigBrawler"].blank?
               json_battlelog["battle"]["players"].each.with_index(1) do |json_pick, i2|
                 team = Team.create
                 # puts "new Team & Pick (#{i2} / #{json_battlelog["battle"]["players"].length})"
